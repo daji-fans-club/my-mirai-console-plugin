@@ -5,3 +5,9 @@
 /test/
 /out/
 /run/
+/.run/
+cache/
+config/
+data/
+
+device.json
