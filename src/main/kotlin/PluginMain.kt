@@ -70,6 +70,15 @@ object PluginMain : KotlinPlugin(
         }
 
         globalEventChannel().subscribeFriendMessages {
+            MyPluginConfig.enableSaveLocal {
+                MyPluginConfig.saveLocal = !MyPluginConfig.saveLocal
+                sender.sendMessage("切换本地存储设置成功，当前为："+MyPluginConfig.saveLocal)
+            }
+
+            MyPluginConfig.enableUpload {
+                MyPluginConfig.upload = !MyPluginConfig.upload
+                sender.sendMessage("切换远程存储设置成功，当前为："+MyPluginConfig.saveLocal)
+            }
 
             always {
                 if (MyPluginConfig.setulai.contains(message.contentToString())) {
@@ -88,7 +97,6 @@ object PluginMain : KotlinPlugin(
                         launch {
                             eroPic.upload()
                         }
-
                     }
                 }
             }

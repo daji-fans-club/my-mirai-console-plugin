@@ -18,19 +18,26 @@ object MyPluginConfig : AutoSavePluginConfig("MyConfig") {
     @ValueDescription("lolicon的apikey")
     val apiKey: String by value()
 
+    @ValueDescription("启停本地存储")
+    val enableSaveLocal: String by value("切换本地存储")
+
     @ValueDescription("是否本地存储")
-    val saveLocal: Boolean by value(false)
+    var saveLocal: Boolean by value(false)
 
     @ValueDescription("本地存储位置")
     val saveLocalPath: String by value(System.getProperty("user.dir"))
 
+    @ValueDescription("启停远程存储")
+    val enableUpload :String by value("切换远程存储")
+
     @ValueDescription("是否远程存储")
-    val upload: Boolean by value(false)
+    var upload: Boolean by value(false)
 
     @ValueDescription("远程图床的url")
     val uploadUrl: String by value()
 
     @ValueDescription("远程图床的secret")
     val uploadSecret: String by value()
+
 
 }

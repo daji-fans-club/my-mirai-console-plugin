@@ -19,12 +19,12 @@ import java.io.InputStream
 class EroPic {
 
     //瑟图属性
-    private var uid = 0
-    private var author = ""
-    private var r18 = false
-    private var pid = 0
-    private var title = ""
-    private var url = ""
+    private var uid: Int = 0
+    private var author: String = ""
+    private var r18: Boolean = false
+    private var pid: Int = 0
+    private var title: String = ""
+    private var url: String = ""
     private var tags = listOf<String>()
 
     //瑟图的可重复输入流
@@ -65,13 +65,22 @@ class EroPic {
     }
 
     fun writeInFile() {
+        if (MyPluginData.eroPicPidSet.contains(pid)) {
+            PluginMain.logger.info("重复图片，不再保存")
+            return
+        }
         val path = "${MyPluginConfig.saveLocalPath}/$pid.png"
         val fileOutputStream = FileOutputStream(path)
         eroPicOutputStream.writeTo(fileOutputStream)
+        MyPluginData.eroPicPidSet.add(pid)
         PluginMain.logger.info("文件写入成功，文件位置：$path")
     }
 
     suspend fun upload() {
+        if (MyPluginData.eroPicPidSet.contains(pid)) {
+            PluginMain.logger.info("重复图片，不再上传")
+            return
+        }
         PluginMain.logger.info("开始上传，上传地址：${MyPluginConfig.uploadUrl}?key=${MyPluginConfig.uploadSecret}&format=json")
         val client = HttpClient()
         val response: HttpResponse = client.submitFormWithBinaryData(
@@ -83,6 +92,7 @@ class EroPic {
                 })
             }
         )
+        MyPluginData.eroPicPidSet.add(pid)
         PluginMain.logger.info("上传完成，响应${response.readText()}")
     }
 
