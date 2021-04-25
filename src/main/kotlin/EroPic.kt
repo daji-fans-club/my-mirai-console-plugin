@@ -1,4 +1,4 @@
-package org.example.mirai.plugin
+package com.reimia.myplugin
 
 import io.ktor.client.*
 import io.ktor.client.request.*
@@ -39,7 +39,7 @@ class EroPic {
         val responseData = runBlocking {
             client.get<String>(eroPicRequestUrl) {
                 parameter("apikey", MyPluginConfig.apiKey)
-                parameter("r18", "false")
+                parameter("r18", MyPluginConfig.r18)
                 parameter("size1200", "true")
             }
         }

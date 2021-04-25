@@ -1,4 +1,4 @@
-package org.example.mirai.plugin
+package com.reimia.myplugin
 
 import kotlinx.serialization.Serializable
 

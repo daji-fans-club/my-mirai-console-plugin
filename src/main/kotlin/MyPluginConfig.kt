@@ -1,4 +1,4 @@
-package org.example.mirai.plugin
+package com.reimia.myplugin
 
 import net.mamoe.mirai.console.data.AutoSavePluginConfig
 import net.mamoe.mirai.console.data.ValueDescription
@@ -17,6 +17,9 @@ object MyPluginConfig : AutoSavePluginConfig("MyConfig") {
 
     @ValueDescription("lolicon的apikey")
     val apiKey: String by value()
+
+    @ValueDescription("是否r18,0为非R18，1为R18，2为混合")
+    var r18: Int by value(0)
 
     @ValueDescription("启停本地存储")
     val enableSaveLocal: String by value("切换本地存储")

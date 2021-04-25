@@ -1,4 +1,4 @@
-package org.example.mirai.plugin
+package com.reimia.myplugin
 
 import net.mamoe.mirai.console.data.AutoSavePluginData
 import net.mamoe.mirai.console.data.ValueDescription

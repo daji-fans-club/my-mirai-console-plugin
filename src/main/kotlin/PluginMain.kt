@@ -1,10 +1,14 @@
-package org.example.mirai.plugin
+package com.reimia.myplugin
 
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
+import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
+import net.mamoe.mirai.console.permission.AbstractPermitteeId
+import net.mamoe.mirai.console.permission.PermissionService.Companion.cancel
+import net.mamoe.mirai.console.permission.PermissionService.Companion.permit
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
 import net.mamoe.mirai.contact.Contact.Companion.sendImage
@@ -15,7 +19,6 @@ import net.mamoe.mirai.message.data.Image
 import net.mamoe.mirai.message.data.Image.Key.queryUrl
 import net.mamoe.mirai.message.data.PlainText
 import net.mamoe.mirai.utils.info
-import java.io.ByteArrayInputStream
 
 object PluginMain : KotlinPlugin(
     JvmPluginDescription(
@@ -39,6 +42,9 @@ object PluginMain : KotlinPlugin(
         MyPluginConfig.reload()
         logger.info { "Plugin loaded" }
         //配置文件目录 "${dataFolder.absolutePath}/"
+
+        MyPluginConfigManager.register()
+        AbstractPermitteeId.AnyContact.permit(MyPluginConfigManager.permission)
 
         globalEventChannel().subscribeAlways<GroupMessageEvent> {
             //群消息
@@ -72,29 +78,29 @@ object PluginMain : KotlinPlugin(
         globalEventChannel().subscribeFriendMessages {
             MyPluginConfig.enableSaveLocal {
                 MyPluginConfig.saveLocal = !MyPluginConfig.saveLocal
-                sender.sendMessage("切换本地存储设置成功，当前为："+MyPluginConfig.saveLocal)
+                sender.sendMessage("切换本地存储设置成功，当前为：" + MyPluginConfig.saveLocal)
             }
 
             MyPluginConfig.enableUpload {
                 MyPluginConfig.upload = !MyPluginConfig.upload
-                sender.sendMessage("切换远程存储设置成功，当前为："+MyPluginConfig.saveLocal)
+                sender.sendMessage("切换远程存储设置成功，当前为：" + MyPluginConfig.saveLocal)
             }
 
             always {
                 if (MyPluginConfig.setulai.contains(message.contentToString())) {
                     val eroPic = EroPic()
                     eroPic.getEroPic()
-                    launch {
+                    PluginMain.launch {
                         sender.sendMessage(eroPic.toReadString())
                         sender.sendImage(eroPic.eroPicInputStream)
                     }
                     if (MyPluginConfig.saveLocal) {
-                        launch {
+                        PluginMain.launch {
                             eroPic.writeInFile()
                         }
                     }
                     if (MyPluginConfig.upload) {
-                        launch {
+                        PluginMain.launch {
                             eroPic.upload()
                         }
                     }
@@ -114,5 +120,7 @@ object PluginMain : KotlinPlugin(
 
     override fun onDisable() {
         logger.info("Plugin unloaded")
+        AbstractPermitteeId.AnyContact.cancel(MyPluginConfigManager.permission, true)
+        MyPluginConfigManager.unregister()
     }
 }
