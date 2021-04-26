@@ -18,13 +18,12 @@ import net.mamoe.mirai.event.subscribeFriendMessages
 import net.mamoe.mirai.message.data.Image
 import net.mamoe.mirai.message.data.Image.Key.queryUrl
 import net.mamoe.mirai.message.data.PlainText
-import net.mamoe.mirai.utils.info
 
 object PluginMain : KotlinPlugin(
     JvmPluginDescription(
         id = "com.reimia.myplugin",
         name = "MyPlugin",
-        version = "0.0.1"
+        version = "0.1.0"
     ) {
         author("Reimia")
 
@@ -40,8 +39,7 @@ object PluginMain : KotlinPlugin(
 ) {
     override fun onEnable() {
         MyPluginConfig.reload()
-        logger.info { "Plugin loaded" }
-        //配置文件目录 "${dataFolder.absolutePath}/"
+        MyPluginData.reload()
 
         MyPluginConfigManager.register()
         AbstractPermitteeId.AnyContact.permit(MyPluginConfigManager.permission)
@@ -96,12 +94,23 @@ object PluginMain : KotlinPlugin(
                     }
                     if (MyPluginConfig.saveLocal) {
                         PluginMain.launch {
-                            eroPic.writeInFile()
+                            val catching = runCatching {
+                                eroPic.writeInFile()
+                            }
+                            if (catching.isFailure) {
+                                bot.getFriend(MyPluginConfig.ownerqq)?.sendMessage("图像本地存储失败：${eroPic.toReadString()}")
+                            }
                         }
                     }
                     if (MyPluginConfig.upload) {
                         PluginMain.launch {
-                            eroPic.upload()
+                            val catching = runCatching {
+                                eroPic.upload()
+                            }
+                            if (catching.isFailure) {
+                                bot.getFriend(MyPluginConfig.ownerqq)?.sendMessage("图像远程存储失败：${eroPic.toReadString()}")
+                            }
+
                         }
                     }
                 }
@@ -116,11 +125,14 @@ object PluginMain : KotlinPlugin(
             //自动同意加群申请
             accept()
         }
+
+        logger.info("Plugin loaded")
+
     }
 
     override fun onDisable() {
-        logger.info("Plugin unloaded")
         AbstractPermitteeId.AnyContact.cancel(MyPluginConfigManager.permission, true)
         MyPluginConfigManager.unregister()
+        logger.info("Plugin unloaded")
     }
 }

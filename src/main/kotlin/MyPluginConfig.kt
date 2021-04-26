@@ -9,10 +9,13 @@ object MyPluginConfig : AutoSavePluginConfig("MyConfig") {
     @ValueDescription("来张瑟图指令")
     var setulai: MutableList<String> by value(mutableListOf("涩图", "瑟图"))
 
-    @ValueDescription("bot的qq号")
+    @ValueDescription("bot所有者的qq号")
+    val ownerqq: Long by value()
+
+    @ValueDescription("bot的qq号，在控制台启动用于脱隐")
     val qq: Long by value()
 
-    @ValueDescription("bot的密码")
+    @ValueDescription("bot的密码，在控制台启动用于脱隐")
     val password: String by value()
 
     @ValueDescription("lolicon的apikey")
