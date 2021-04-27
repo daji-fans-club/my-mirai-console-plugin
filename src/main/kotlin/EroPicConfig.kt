@@ -4,7 +4,7 @@ import net.mamoe.mirai.console.data.AutoSavePluginConfig
 import net.mamoe.mirai.console.data.ValueDescription
 import net.mamoe.mirai.console.data.value
 
-object EroPicConfig : AutoSavePluginConfig("MyConfig") {
+object EroPicConfig : AutoSavePluginConfig("EroPic") {
 
     @ValueDescription("来张瑟图指令")
     var setulai: MutableList<String> by value(mutableListOf("涩图", "瑟图"))
@@ -23,6 +23,9 @@ object EroPicConfig : AutoSavePluginConfig("MyConfig") {
 
     @ValueDescription("是否r18,0为非R18，1为R18，2为混合")
     var r18: Int by value(0)
+
+    @ValueDescription("瑟图撤回时间，默认60秒")
+    var recall: Long by value(60L)
 
     @ValueDescription("是否本地存储")
     var saveLocal: Boolean by value(false)

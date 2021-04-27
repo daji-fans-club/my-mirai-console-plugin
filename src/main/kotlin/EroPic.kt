@@ -8,6 +8,8 @@ import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import net.mamoe.mirai.contact.Contact
+import net.mamoe.mirai.message.MessageReceipt
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
@@ -16,24 +18,27 @@ import java.io.InputStream
 /**
  * 瑟图对象
  */
-class EroPic {
+class EroPic<C : Contact> {
 
     //瑟图属性
-    private var uid: Int = 0
-    private var author: String = ""
-    private var r18: Boolean = false
-    private var pid: Int = 0
-    private var title: String = ""
-    private var url: String = ""
-    private var tags = listOf<String>()
+    var uid: Int = 0
+    var author: String = ""
+    var r18: Boolean = false
+    var pid: Int = 0
+    var title: String = ""
+    var url: String = ""
+    var tags = listOf<String>()
 
     //瑟图的可重复输入流
-    lateinit var eroPicInputStream: ByteArrayInputStream
+    var eroPicInputStream: ByteArrayInputStream
 
     //瑟图的可重复输出流
     private val eroPicOutputStream = ByteArrayOutputStream()
 
-    fun getEroPic() {
+    //图片消息的回执，用于撤回和引用
+    lateinit var messageReceipt: MessageReceipt<C>
+
+    init {
         val eroPicRequestUrl = "http://api.lolicon.app/setu"
         val client = HttpClient()
         val responseData = runBlocking {
