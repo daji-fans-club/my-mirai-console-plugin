@@ -24,26 +24,20 @@ object MyPluginConfig : AutoSavePluginConfig("MyConfig") {
     @ValueDescription("是否r18,0为非R18，1为R18，2为混合")
     var r18: Int by value(0)
 
-    @ValueDescription("启停本地存储")
-    val enableSaveLocal: String by value("切换本地存储")
-
     @ValueDescription("是否本地存储")
     var saveLocal: Boolean by value(false)
 
     @ValueDescription("本地存储位置")
     val saveLocalPath: String by value(System.getProperty("user.dir"))
 
-    @ValueDescription("启停远程存储")
-    val enableUpload :String by value("切换远程存储")
-
     @ValueDescription("是否远程存储")
-    var upload: Boolean by value(false)
+    var saveRemote: Boolean by value(false)
 
     @ValueDescription("远程图床的url")
-    val uploadUrl: String by value()
+    val saveRemoteUrl: String by value()
 
     @ValueDescription("远程图床的secret")
-    val uploadSecret: String by value()
+    val saveRemoteSecret: String by value()
 
 
 }

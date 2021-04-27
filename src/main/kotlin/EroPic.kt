@@ -81,10 +81,10 @@ class EroPic {
             PluginMain.logger.info("重复图片，不再上传")
             return
         }
-        PluginMain.logger.info("开始上传，上传地址：${MyPluginConfig.uploadUrl}?key=${MyPluginConfig.uploadSecret}&format=json")
+        PluginMain.logger.info("开始上传，上传地址：${MyPluginConfig.saveRemoteUrl}?key=${MyPluginConfig.saveRemoteSecret}&format=json")
         val client = HttpClient()
         val response: HttpResponse = client.submitFormWithBinaryData(
-            url = "${MyPluginConfig.uploadUrl}?key=${MyPluginConfig.uploadSecret}&format=json",
+            url = "${MyPluginConfig.saveRemoteUrl}?key=${MyPluginConfig.saveRemoteSecret}&format=json",
             formData = formData {
                 append("source", eroPicOutputStream.toByteArray(), Headers.build {
                     append(HttpHeaders.ContentType, "image/png")

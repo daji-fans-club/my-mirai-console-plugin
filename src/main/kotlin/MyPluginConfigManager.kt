@@ -7,7 +7,6 @@ import net.mamoe.mirai.console.util.ConsoleExperimentalApi
 
 object MyPluginConfigManager : SimpleCommand(PluginMain, "set") {
 
-
     @ExperimentalCommandDescriptors
     @ConsoleExperimentalApi
     override val prefixOptional: Boolean = true
@@ -17,6 +16,12 @@ object MyPluginConfigManager : SimpleCommand(PluginMain, "set") {
         when (property) {
             "r18" -> {
                 MyPluginConfig.r18 = value.toInt()
+            }
+            "saveLocal" -> {
+                MyPluginConfig.saveLocal = value.toBoolean()
+            }
+            "saveRemote" -> {
+                MyPluginConfig.saveRemote = value.toBoolean()
             }
         }
         sendMessage("设置成功")
