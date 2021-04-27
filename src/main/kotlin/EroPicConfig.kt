@@ -4,7 +4,7 @@ import net.mamoe.mirai.console.data.AutoSavePluginConfig
 import net.mamoe.mirai.console.data.ValueDescription
 import net.mamoe.mirai.console.data.value
 
-object MyPluginConfig : AutoSavePluginConfig("MyConfig") {
+object EroPicConfig : AutoSavePluginConfig("MyConfig") {
 
     @ValueDescription("来张瑟图指令")
     var setulai: MutableList<String> by value(mutableListOf("涩图", "瑟图"))

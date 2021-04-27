@@ -11,9 +11,9 @@ import net.mamoe.mirai.console.util.ConsoleExperimentalApi
 suspend fun main() {
     MiraiConsoleTerminalLoader.startAsDaemon()
 
-    PluginMain.load()
-    PluginMain.enable()
-    val bot = BotFactory.newBot(MyPluginConfig.qq, MyPluginConfig.password) {
+    EroPicMain.load()
+    EroPicMain.enable()
+    val bot = BotFactory.newBot(EroPicConfig.qq, EroPicConfig.password) {
         fileBasedDeviceInfo()
     }
     bot.login()

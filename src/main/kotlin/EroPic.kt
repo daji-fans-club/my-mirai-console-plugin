@@ -38,8 +38,8 @@ class EroPic {
         val client = HttpClient()
         val responseData = runBlocking {
             client.get<String>(eroPicRequestUrl) {
-                parameter("apikey", MyPluginConfig.apiKey)
-                parameter("r18", MyPluginConfig.r18)
+                parameter("apikey", EroPicConfig.apiKey)
+                parameter("r18", EroPicConfig.r18)
                 parameter("size1200", "true")
             }
         }
@@ -61,30 +61,30 @@ class EroPic {
         this.eroPicOutputStream.writeBytes(inputStream.readAllBytes())
         eroPicInputStream = ByteArrayInputStream(eroPicOutputStream.toByteArray())
         inputStream.close()
-        PluginMain.logger.info("下载完成：$this")
+        EroPicMain.logger.info("下载完成：$this")
     }
 
     fun writeInFile() {
-        if (MyPluginData.eroPicPidSet.contains(pid)) {
-            PluginMain.logger.info("重复图片，不再保存")
+        if (EroPicData.eroPicPidSet.contains(pid)) {
+            EroPicMain.logger.info("重复图片，不再保存")
             return
         }
-        val path = "${MyPluginConfig.saveLocalPath}/$pid.png"
+        val path = "${EroPicConfig.saveLocalPath}/$pid.png"
         val fileOutputStream = FileOutputStream(path)
         eroPicOutputStream.writeTo(fileOutputStream)
-        MyPluginData.eroPicPidSet.add(pid)
-        PluginMain.logger.info("文件写入成功，文件位置：$path")
+        EroPicData.eroPicPidSet.add(pid)
+        EroPicMain.logger.info("文件写入成功，文件位置：$path")
     }
 
     suspend fun upload() {
-        if (MyPluginData.eroPicPidSet.contains(pid)) {
-            PluginMain.logger.info("重复图片，不再上传")
+        if (EroPicData.eroPicPidSet.contains(pid)) {
+            EroPicMain.logger.info("重复图片，不再上传")
             return
         }
-        PluginMain.logger.info("开始上传，上传地址：${MyPluginConfig.saveRemoteUrl}?key=${MyPluginConfig.saveRemoteSecret}&format=json")
+        EroPicMain.logger.info("开始上传，上传地址：${EroPicConfig.saveRemoteUrl}?key=${EroPicConfig.saveRemoteSecret}&format=json")
         val client = HttpClient()
         val response: HttpResponse = client.submitFormWithBinaryData(
-            url = "${MyPluginConfig.saveRemoteUrl}?key=${MyPluginConfig.saveRemoteSecret}&format=json",
+            url = "${EroPicConfig.saveRemoteUrl}?key=${EroPicConfig.saveRemoteSecret}&format=json",
             formData = formData {
                 append("source", eroPicOutputStream.toByteArray(), Headers.build {
                     append(HttpHeaders.ContentType, "image/png")
@@ -92,8 +92,8 @@ class EroPic {
                 })
             }
         )
-        MyPluginData.eroPicPidSet.add(pid)
-        PluginMain.logger.info("上传完成，响应${response.readText()}")
+        EroPicData.eroPicPidSet.add(pid)
+        EroPicMain.logger.info("上传完成，响应${response.readText()}")
     }
 
     override fun toString(): String {
