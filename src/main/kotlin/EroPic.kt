@@ -62,7 +62,6 @@ class EroPic<C : Contact> {
         val inputStream = runBlocking {
             client.get<InputStream>(url)
         }
-        this.eroPicOutputStream.flush()
         this.eroPicOutputStream.writeBytes(inputStream.readAllBytes())
         eroPicInputStream = ByteArrayInputStream(eroPicOutputStream.toByteArray())
         inputStream.close()

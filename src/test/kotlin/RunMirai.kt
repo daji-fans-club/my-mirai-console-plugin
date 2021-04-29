@@ -15,6 +15,7 @@ suspend fun main() {
     EroPicMain.enable()
     val bot = BotFactory.newBot(EroPicConfig.qq, EroPicConfig.password) {
         fileBasedDeviceInfo()
+        enableContactCache()
     }
     bot.login()
 
