@@ -11,6 +11,9 @@ import net.mamoe.mirai.event.events.NewFriendRequestEvent
 import net.mamoe.mirai.event.subscribeFriendMessages
 import net.mamoe.mirai.event.subscribeGroupMessages
 
+/**
+ * event处理器
+ */
 fun eroPicHandler() {
 
     GlobalEventChannel.subscribeGroupMessages {

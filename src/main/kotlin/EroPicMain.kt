@@ -18,8 +18,7 @@ object EroPicMain : KotlinPlugin(
 
         info(
             """
-            这是一个测试插件, 
-            在这里描述插件的功能和用法等.
+            瑟图插件测试
         """.trimIndent()
         )
 
