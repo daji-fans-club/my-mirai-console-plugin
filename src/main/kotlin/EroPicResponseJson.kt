@@ -9,8 +9,6 @@ import kotlinx.serialization.Serializable
 data class EroPicResponseJson (
     val code: Int,
     val msg: String = "",
-    val quota: Int,
-    val quota_min_ttl: Int,
     val count: Int,
     val data: List<EroPicJson>? = null
 ) {
