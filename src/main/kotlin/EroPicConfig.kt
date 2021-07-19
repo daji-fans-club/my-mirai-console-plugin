@@ -21,14 +21,11 @@ object EroPicConfig : AutoSavePluginConfig("EroPic") {
     @ValueDescription("bot的密码，在控制台启动用于脱隐")
     val password: String by value()
 
-    @ValueDescription("lolicon的apikey")
-    val apiKey: String by value()
-
     @ValueDescription("是否r18,0为非R18，1为R18，2为混合")
     var r18: Int by value(0)
 
-    @ValueDescription("瑟图默认每天每人请求数")
-    var limit: Int by value(5)
+    @ValueDescription("是否发送详细信息")
+    var detail: Boolean by value(true)
 
     @ValueDescription("瑟图撤回时间，默认60秒")
     var recall: Long by value(60L)

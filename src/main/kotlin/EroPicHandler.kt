@@ -21,26 +21,10 @@ fun eroPicHandler() {
         always {
             if (EroPicConfig.setulai.contains(message.contentToString())) {
 
-                EroPicData.memberEroPicLeftCount.putIfAbsent(sender.id, EroPicConfig.limit)
-                if (EroPicData.memberEroPicLeftCount[sender.id]!! < 0) {
-                    sender.sendMessage("您今日瑟图获取量已达上限，请明日再来")
-                    return@always
-                }
-
                 val eroPic = EroPic<Group>()
                 EroPicMain.launch {
                     group.sendMessage(eroPic.toReadString())
                     eroPic.messageReceipt = group.sendImage(eroPic.eroPicInputStream)
-                    EroPicData.memberEroPicLeftCount.replace(
-                        sender.id,
-                        EroPicData.memberEroPicLeftCount[sender.id]!! - 1
-                    )
-                    if (EroPicData.memberEroPicLeftCount[sender.id]!! < 0) {
-                        launch {
-                            delay(18000)
-                            EroPicData.memberEroPicLeftCount[sender.id] = EroPicConfig.limit
-                        }
-                    }
                     if (EroPicConfig.recall > 0) {
                         eroPic.messageReceipt.recallIn(EroPicConfig.recall)
                     }
@@ -79,26 +63,10 @@ fun eroPicHandler() {
         always {
             if (EroPicConfig.setulai.contains(message.contentToString())) {
 
-                EroPicData.memberEroPicLeftCount.putIfAbsent(sender.id, EroPicConfig.limit)
-                if (EroPicData.memberEroPicLeftCount[sender.id]!! < 0) {
-                    sender.sendMessage("您今日瑟图获取量已达上限，请明日再来")
-                    return@always
-                }
-
                 val eroPic = EroPic<Friend>()
                 EroPicMain.launch {
                     sender.sendMessage(eroPic.toReadString())
                     eroPic.messageReceipt = sender.sendImage(eroPic.eroPicInputStream)
-                    EroPicData.memberEroPicLeftCount.replace(
-                        sender.id,
-                        EroPicData.memberEroPicLeftCount[sender.id]!! - 1
-                    )
-                    if (EroPicData.memberEroPicLeftCount[sender.id]!! < 0) {
-                        launch {
-                            delay(18000)
-                            EroPicData.memberEroPicLeftCount[sender.id] = EroPicConfig.limit
-                        }
-                    }
                     if (EroPicConfig.recall > 0) {
                         eroPic.messageReceipt.recallIn(EroPicConfig.recall)
                     }
