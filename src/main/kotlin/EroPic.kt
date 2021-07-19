@@ -43,7 +43,6 @@ class EroPic<C : Contact> {
         val client = HttpClient()
         val responseData = runBlocking {
             client.get<String>(eroPicRequestUrl) {
-                parameter("apikey", EroPicConfig.apiKey)
                 parameter("r18", EroPicConfig.r18)
                 parameter("size1200", "true")
             }
