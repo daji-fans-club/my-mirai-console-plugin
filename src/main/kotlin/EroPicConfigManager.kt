@@ -18,7 +18,7 @@ object EroPicConfigManager : CompositeCommand(EroPicMain, "ero") {
     suspend fun CommandSender.set(property: String, value: String) {
         when (property) {
             "r18" -> EroPicConfig.r18 = value.toInt()
-            "limit" -> EroPicConfig.limit = value.toInt()
+            "detail" -> EroPicConfig.detail = value.toBoolean()
             "recall" -> EroPicConfig.recall = value.toLong()
             "saveLocal" -> EroPicConfig.saveLocal = value.toBoolean()
             "saveRemote" -> EroPicConfig.saveRemote = value.toBoolean()
@@ -31,7 +31,7 @@ object EroPicConfigManager : CompositeCommand(EroPicMain, "ero") {
     suspend fun CommandSender.get(property: String) {
         when (property) {
             "r18" -> sendMessage(EroPicConfig.r18.toString())
-            "limit" -> sendMessage(EroPicConfig.limit.toString())
+            "detail" -> sendMessage(EroPicConfig.detail.toString())
             "recall" -> sendMessage(EroPicConfig.recall.toString())
             "saveLocal" -> sendMessage(EroPicConfig.saveLocal.toString())
             "saveRemote" -> sendMessage(EroPicConfig.saveRemote.toString())
