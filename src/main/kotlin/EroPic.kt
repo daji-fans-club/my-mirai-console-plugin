@@ -18,7 +18,7 @@ import java.io.InputStream
 /**
  * 瑟图对象
  */
-class EroPic<C : Contact> {
+class EroPic<C : Contact>(splitMessage: List<String>) {
 
     //瑟图属性
     var uid: Int = 0
@@ -39,12 +39,15 @@ class EroPic<C : Contact> {
     lateinit var messageReceipt: MessageReceipt<C>
 
     init {
-        val eroPicRequestUrl = "http://api.lolicon.app/setu"
+        val eroPicRequestUrl = "https://api.lolicon.app/setu/v2"
+        var tagList = splitMessage.subList(1, splitMessage.size - 1)
         val client = HttpClient()
+        val tagParameter = tagList.stream().reduce { a: String, b: String -> "$a|$b" }.get()
         val responseData = runBlocking {
             client.get<String>(eroPicRequestUrl) {
                 parameter("r18", EroPicConfig.r18)
-                parameter("size1200", "true")
+                parameter("size", "regular")
+                parameter("tag", tagParameter)
             }
         }
         println("原始请求数据：$responseData")
@@ -55,7 +58,7 @@ class EroPic<C : Contact> {
         r18 = eroPicJson.r18
         pid = eroPicJson.pid
         title = eroPicJson.title
-        url = eroPicJson.url
+        url = eroPicJson.urls[0]
         tags = eroPicJson.tags
 
         val inputStream = runBlocking {

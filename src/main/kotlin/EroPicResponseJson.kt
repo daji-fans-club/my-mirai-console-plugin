@@ -19,7 +19,7 @@ data class EroPicResponseJson (
         val uid: Int,
         val title: String,
         val author: String,
-        val url: String,
+        val urls: List<String>,
         val r18: Boolean,
         val width: Int,
         val height: Int,
