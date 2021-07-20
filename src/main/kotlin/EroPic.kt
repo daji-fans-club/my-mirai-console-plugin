@@ -58,7 +58,7 @@ class EroPic<C : Contact>(splitMessage: List<String>) {
         r18 = eroPicJson.r18
         pid = eroPicJson.pid
         title = eroPicJson.title
-        url = eroPicJson.urls[0]
+        url = eroPicJson.urls["regular"]!!
         tags = eroPicJson.tags
 
         val inputStream = runBlocking {
