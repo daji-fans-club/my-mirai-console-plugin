@@ -1,6 +1,5 @@
 package com.reimia.myplugin
 
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.mamoe.mirai.contact.Contact.Companion.sendImage
 import net.mamoe.mirai.contact.Friend
@@ -19,9 +18,10 @@ fun eroPicHandler() {
     GlobalEventChannel.subscribeGroupMessages {
 
         always {
-            if (EroPicConfig.setulai.contains(message.contentToString())) {
+            var splitMessage = message.contentToString().split(" ").toList()
+            if (EroPicConfig.setulai.contains(splitMessage.get(0))) {
 
-                val eroPic = EroPic<Group>()
+                val eroPic = EroPic<Group>(splitMessage)
                 EroPicMain.launch {
                     group.sendMessage(eroPic.toReadString())
                     eroPic.messageReceipt = group.sendImage(eroPic.eroPicInputStream)
@@ -61,9 +61,10 @@ fun eroPicHandler() {
     GlobalEventChannel.subscribeFriendMessages {
 
         always {
-            if (EroPicConfig.setulai.contains(message.contentToString())) {
+            var splitMessage = message.contentToString().split(" ").toList()
+            if (EroPicConfig.setulai.contains(splitMessage.get(0))) {
 
-                val eroPic = EroPic<Friend>()
+                val eroPic = EroPic<Friend>(splitMessage)
                 EroPicMain.launch {
                     sender.sendMessage(eroPic.toReadString())
                     eroPic.messageReceipt = sender.sendImage(eroPic.eroPicInputStream)
