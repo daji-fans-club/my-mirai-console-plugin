@@ -15,6 +15,8 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
 import java.io.InputStream
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * 瑟图对象
@@ -31,7 +33,7 @@ class EroPic<C : Contact>(splitMessage: List<String>) {
     var tags = listOf<String>()
 
     //瑟图的可重复输入流
-    var eroPicInputStream: ByteArrayInputStream
+    lateinit var eroPicInputStream: ByteArrayInputStream
 
     //瑟图的可重复输出流
     private val eroPicOutputStream = ByteArrayOutputStream()
@@ -50,27 +52,28 @@ class EroPic<C : Contact>(splitMessage: List<String>) {
             client.get<String>(eroPicRequestUrl) {
                 parameter("r18", EroPicConfig.r18)
                 parameter("size", "regular")
-                tagList.forEach{item: String -> parameter("tag",item)}
+                tagList.forEach { item: String -> parameter("tag", item) }
             }
         }
         println("原始请求数据：$responseData")
         val eroPicResponseJson: EroPicResponseJson = Json.decodeFromString(responseData)
-        val eroPicJson = eroPicResponseJson.data!![0]
-        uid = eroPicJson.uid
-        author = eroPicJson.author
-        r18 = eroPicJson.r18
-        pid = eroPicJson.pid
-        title = eroPicJson.title
-        url = eroPicJson.urls["regular"]!!
-        tags = eroPicJson.tags
-
-        val inputStream = runBlocking {
-            client.get<InputStream>(url)
+        if (eroPicResponseJson.data!!.isNotEmpty()) {
+            val eroPicJson = eroPicResponseJson.data[0]
+            uid = eroPicJson.uid
+            author = eroPicJson.author
+            r18 = eroPicJson.r18
+            pid = eroPicJson.pid
+            title = eroPicJson.title
+            url = eroPicJson.urls["regular"]!!
+            tags = eroPicJson.tags
+            val inputStream = runBlocking {
+                client.get<InputStream>(url)
+            }
+            this.eroPicOutputStream.writeBytes(inputStream.readAllBytes())
+            eroPicInputStream = ByteArrayInputStream(eroPicOutputStream.toByteArray())
+            inputStream.close()
+            EroPicMain.logger.info("下载完成：$this")
         }
-        this.eroPicOutputStream.writeBytes(inputStream.readAllBytes())
-        eroPicInputStream = ByteArrayInputStream(eroPicOutputStream.toByteArray())
-        inputStream.close()
-        EroPicMain.logger.info("下载完成：$this")
     }
 
     fun writeInFile() {

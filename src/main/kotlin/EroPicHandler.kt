@@ -18,7 +18,7 @@ fun eroPicHandler() {
     GlobalEventChannel.subscribeGroupMessages {
 
         always {
-            var splitMessage = message.contentToString().split(" ").toList()
+            val splitMessage = message.contentToString().split(" ").toList()
             if (EroPicConfig.setulai.contains(splitMessage.get(0))) {
 
                 val eroPic = EroPic<Group>(splitMessage)
@@ -61,15 +61,19 @@ fun eroPicHandler() {
     GlobalEventChannel.subscribeFriendMessages {
 
         always {
-            var splitMessage = message.contentToString().split(" ").toList()
+            val splitMessage = message.contentToString().split(" ").toList()
             if (EroPicConfig.setulai.contains(splitMessage.get(0))) {
 
                 val eroPic = EroPic<Friend>(splitMessage)
                 EroPicMain.launch {
-                    sender.sendMessage(eroPic.toReadString())
-                    eroPic.messageReceipt = sender.sendImage(eroPic.eroPicInputStream)
-                    if (EroPicConfig.recall > 0) {
-                        eroPic.messageReceipt.recallIn(EroPicConfig.recall)
+                    if (eroPic.url.isBlank()) {
+                        sender.sendMessage("暂不支持您的xp，请重新再试")
+                    } else {
+                        sender.sendMessage(eroPic.toReadString())
+                        eroPic.messageReceipt = sender.sendImage(eroPic.eroPicInputStream)
+                        if (EroPicConfig.recall > 0) {
+                            eroPic.messageReceipt.recallIn(EroPicConfig.recall)
+                        }
                     }
                 }
                 if (EroPicConfig.saveLocal) {
