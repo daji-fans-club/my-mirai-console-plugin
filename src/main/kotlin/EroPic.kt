@@ -6,6 +6,7 @@ import io.ktor.client.request.forms.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.stream.consumeAsFlow
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import net.mamoe.mirai.contact.Contact
@@ -40,14 +41,16 @@ class EroPic<C : Contact>(splitMessage: List<String>) {
 
     init {
         val eroPicRequestUrl = "https://api.lolicon.app/setu/v2"
-        var tagList = splitMessage.subList(1, splitMessage.size - 1)
+        var tagList: List<String> = ArrayList()
+        if (splitMessage.size > 1) {
+            tagList = splitMessage.drop(1)
+        }
         val client = HttpClient()
-        val tagParameter = tagList.stream().reduce { a: String, b: String -> "$a|$b" }.get()
         val responseData = runBlocking {
             client.get<String>(eroPicRequestUrl) {
                 parameter("r18", EroPicConfig.r18)
                 parameter("size", "regular")
-                parameter("tag", tagParameter)
+                tagList.forEach{item: String -> parameter("tag",item)}
             }
         }
         println("原始请求数据：$responseData")
