@@ -19,11 +19,17 @@ fun eroPicHandler() {
 
         always {
             val splitMessage = message.contentToString().split(" ").toList()
-            if (EroPicConfig.setulai.contains(splitMessage.get(0))) {
+            if (EroPicConfig.setulai.contains(splitMessage[0])) {
 
                 val eroPic = EroPic<Group>(splitMessage)
+                if (eroPic.url.isBlank()) {
+                    group.sendMessage("暂不支持您的xp，请重新再试")
+                    return@always;
+                }
                 EroPicMain.launch {
-                    group.sendMessage(eroPic.toReadString())
+                    if (EroPicConfig.detail) {
+                        group.sendMessage(eroPic.toReadString())
+                    }
                     eroPic.messageReceipt = group.sendImage(eroPic.eroPicInputStream)
                     if (EroPicConfig.recall > 0) {
                         eroPic.messageReceipt.recallIn(EroPicConfig.recall)
@@ -62,18 +68,20 @@ fun eroPicHandler() {
 
         always {
             val splitMessage = message.contentToString().split(" ").toList()
-            if (EroPicConfig.setulai.contains(splitMessage.get(0))) {
+            if (EroPicConfig.setulai.contains(splitMessage[0])) {
 
                 val eroPic = EroPic<Friend>(splitMessage)
+                if (eroPic.url.isBlank()) {
+                    sender.sendMessage("暂不支持您的xp，请重新再试")
+                    return@always;
+                }
                 EroPicMain.launch {
-                    if (eroPic.url.isBlank()) {
-                        sender.sendMessage("暂不支持您的xp，请重新再试")
-                    } else {
+                    if (EroPicConfig.detail) {
                         sender.sendMessage(eroPic.toReadString())
-                        eroPic.messageReceipt = sender.sendImage(eroPic.eroPicInputStream)
-                        if (EroPicConfig.recall > 0) {
-                            eroPic.messageReceipt.recallIn(EroPicConfig.recall)
-                        }
+                    }
+                    eroPic.messageReceipt = sender.sendImage(eroPic.eroPicInputStream)
+                    if (EroPicConfig.recall > 0) {
+                        eroPic.messageReceipt.recallIn(EroPicConfig.recall)
                     }
                 }
                 if (EroPicConfig.saveLocal) {
