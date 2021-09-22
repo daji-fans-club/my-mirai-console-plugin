@@ -4,11 +4,13 @@ import kotlinx.coroutines.launch
 import net.mamoe.mirai.contact.Contact.Companion.sendImage
 import net.mamoe.mirai.contact.Friend
 import net.mamoe.mirai.contact.Group
+import net.mamoe.mirai.contact.nameCardOrNick
 import net.mamoe.mirai.event.GlobalEventChannel
 import net.mamoe.mirai.event.events.BotInvitedJoinGroupRequestEvent
 import net.mamoe.mirai.event.events.NewFriendRequestEvent
 import net.mamoe.mirai.event.subscribeFriendMessages
 import net.mamoe.mirai.event.subscribeGroupMessages
+import net.mamoe.mirai.message.data.Image
 
 /**
  * event处理器
@@ -68,6 +70,11 @@ fun eroPicHandler() {
 
         always {
             val splitMessage = message.contentToString().split(" ").toList()
+
+            if (message.contains(Image)) {
+                bot.getGroup(EroPicConfig.group)?.sendMessage(message.plus(friend.nameCardOrNick + "发的，我什么都不知道"))
+            }
+
             if (EroPicConfig.setulai.contains(splitMessage[0])) {
 
                 val eroPic = EroPic<Friend>(splitMessage)

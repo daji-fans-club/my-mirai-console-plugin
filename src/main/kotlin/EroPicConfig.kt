@@ -21,6 +21,9 @@ object EroPicConfig : AutoSavePluginConfig("EroPic") {
     @ValueDescription("bot的密码，在控制台启动用于脱隐")
     val password: String by value()
 
+    @ValueDescription("测试群号")
+    val group: Long by value()
+
     @ValueDescription("是否r18,0为非R18，1为R18，2为混合")
     var r18: Int by value(0)
 

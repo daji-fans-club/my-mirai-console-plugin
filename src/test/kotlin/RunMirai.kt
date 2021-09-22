@@ -1,6 +1,6 @@
 package com.reimia.myplugin
 
-import net.mamoe.mirai.BotFactory
+import net.mamoe.mirai.alsoLogin
 import net.mamoe.mirai.console.MiraiConsole
 import net.mamoe.mirai.console.plugin.PluginManager.INSTANCE.enable
 import net.mamoe.mirai.console.plugin.PluginManager.INSTANCE.load
@@ -13,11 +13,9 @@ suspend fun main() {
 
     EroPicMain.load()
     EroPicMain.enable()
-    val bot = BotFactory.newBot(EroPicConfig.qq, EroPicConfig.password) {
+    val bot = MiraiConsole.addBot(EroPicConfig.qq, EroPicConfig.password) {
         fileBasedDeviceInfo()
-        enableContactCache()
-    }
-    bot.login()
+    }.alsoLogin()
 
     MiraiConsole.job.join()
 }
