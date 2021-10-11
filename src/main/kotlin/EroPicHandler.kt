@@ -23,7 +23,17 @@ fun eroPicHandler() {
             val splitMessage = message.contentToString().split(" ").toList()
             if (EroPicConfig.setulai.contains(splitMessage[0])) {
 
-                val eroPic = EroPic<Group>(splitMessage)
+                var eroPic = EroPic<Group>(splitMessage)
+                if (eroPic.pid == EroPicData.eroLastPic) {
+                    eroPic = EroPic(splitMessage)
+                    if (eroPic.pid == EroPicData.eroLastPic) {
+                        eroPic = EroPic(splitMessage)
+                        if (eroPic.pid == EroPicData.eroLastPic) {
+                            group.sendMessage("别发了，搜了几遍就这一张")
+                            return@always;
+                        }
+                    }
+                }
                 if (eroPic.url.isBlank()) {
                     group.sendMessage("暂不支持您的xp，请重新再试")
                     return@always;
@@ -31,6 +41,7 @@ fun eroPicHandler() {
                 EroPicMain.launch {
                     if (EroPicConfig.detail) {
                         group.sendMessage(eroPic.toReadString())
+                        EroPicData.eroLastPic = eroPic.pid
                     }
                     eroPic.messageReceipt = group.sendImage(eroPic.eroPicInputStream)
                     if (EroPicConfig.recall > 0) {
