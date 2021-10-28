@@ -44,9 +44,8 @@ class EroPic<C : Contact>(splitMessage: List<String>) {
         if (splitMessage.size > 1) {
             tagList = splitMessage.drop(1)
         }
-        val client = HttpClient()
         val responseData = runBlocking {
-            client.get<String>(eroPicRequestUrl) {
+            EroPicMain.client.get<String>(eroPicRequestUrl) {
                 parameter("r18", EroPicConfig.r18)
                 parameter("size", "regular")
                 tagList.forEach { item: String -> parameter("tag", item) }
@@ -63,8 +62,9 @@ class EroPic<C : Contact>(splitMessage: List<String>) {
             title = eroPicJson.title
             url = eroPicJson.urls["regular"]!!
             tags = eroPicJson.tags
+            val replaceUrl = url.replace("i.pixiv.cat", "i.pixiv.re")
             val inputStream = runBlocking {
-                client.get<InputStream>(url)
+                EroPicMain.client.get<InputStream>(replaceUrl)
             }
             this.eroPicOutputStream.writeBytes(inputStream.readAllBytes())
             eroPicInputStream = ByteArrayInputStream(eroPicOutputStream.toByteArray())
@@ -91,8 +91,7 @@ class EroPic<C : Contact>(splitMessage: List<String>) {
             return
         }
         EroPicMain.logger.info("开始上传，上传地址：${EroPicConfig.saveRemoteUrl}?key=${EroPicConfig.saveRemoteSecret}&format=json")
-        val client = HttpClient()
-        val response: HttpResponse = client.submitFormWithBinaryData(
+        val response: HttpResponse = EroPicMain.client.submitFormWithBinaryData(
             url = "${EroPicConfig.saveRemoteUrl}?key=${EroPicConfig.saveRemoteSecret}&format=json",
             formData = formData {
                 append("source", eroPicOutputStream.toByteArray(), Headers.build {

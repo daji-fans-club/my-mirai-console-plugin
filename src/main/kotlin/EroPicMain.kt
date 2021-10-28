@@ -1,5 +1,6 @@
 package com.reimia.myplugin
 
+import io.ktor.client.*
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
 import net.mamoe.mirai.console.permission.AbstractPermitteeId
@@ -25,6 +26,8 @@ object EroPicMain : KotlinPlugin(
         // author 和 info 可以删除.
     }
 ) {
+    lateinit var client: HttpClient
+
     override fun onEnable() {
         EroPicConfig.reload()
         EroPicData.reload()
@@ -33,7 +36,7 @@ object EroPicMain : KotlinPlugin(
         AbstractPermitteeId.AnyContact.permit(EroPicConfigManager.permission)
 
         eroPicHandler()
-
+        client = HttpClient()
         logger.info("EroPic Plugin loaded")
 
     }
