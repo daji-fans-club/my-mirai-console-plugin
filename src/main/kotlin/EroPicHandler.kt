@@ -44,7 +44,7 @@ fun eroPicHandler() {
                         EroPicData.eroLastPic = eroPic.pid
                     }
                     eroPic.messageReceipt = group.sendImage(eroPic.eroPicInputStream)
-                    if (EroPicConfig.recall > 0) {
+                    if (eroPic.r18) {
                         eroPic.messageReceipt.recallIn(EroPicConfig.recall)
                     }
                 }
