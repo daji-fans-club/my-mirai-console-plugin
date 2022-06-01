@@ -111,7 +111,9 @@ class EroPic<C : Contact>(splitMessage: List<String>) {
     fun toReadString(): String {
         return "标题：$title\n" +
             "作者：$author\n" +
-            "标签：$tags"
+            "标签：$tags\n" +
+            "pid：$pid\n" +
+            "url：$url"
     }
 
 }

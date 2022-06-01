@@ -10,7 +10,9 @@ import net.mamoe.mirai.event.events.BotInvitedJoinGroupRequestEvent
 import net.mamoe.mirai.event.events.NewFriendRequestEvent
 import net.mamoe.mirai.event.subscribeFriendMessages
 import net.mamoe.mirai.event.subscribeGroupMessages
+import net.mamoe.mirai.event.subscribeGroupTempMessages
 import net.mamoe.mirai.message.data.Image
+import net.mamoe.mirai.message.data.MessageChainBuilder
 
 /**
  * event处理器
@@ -82,9 +84,6 @@ fun eroPicHandler() {
         always {
             val splitMessage = message.contentToString().split(" ").toList()
 
-            if (message.contains(Image)) {
-                bot.getGroup(EroPicConfig.group)?.sendMessage(message.plus(friend.nameCardOrNick + "发的，我什么都不知道"))
-            }
 
             if (EroPicConfig.setulai.contains(splitMessage[0])) {
 

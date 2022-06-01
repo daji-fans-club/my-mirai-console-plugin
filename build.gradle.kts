@@ -1,12 +1,12 @@
 plugins {
-    val kotlinVersion = "1.4.31"
+    val kotlinVersion = "1.6.0"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
-    id("net.mamoe.mirai-console") version "2.7.1"
+    id("net.mamoe.mirai-console") version "2.10.1"
 }
 
-mirai{
-    version = "2.7.1"
+mirai {
+    version = "2.10.1"
 }
 
 group = "com.reimia.myplugin"
@@ -20,5 +20,5 @@ repositories {
 }
 
 dependencies {
-
+    implementation("com.google.code.gson:gson:2.9.0")
 }
