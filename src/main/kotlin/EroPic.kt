@@ -1,6 +1,5 @@
 package com.reimia.myplugin
 
-import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.client.statement.*
@@ -66,7 +65,7 @@ class EroPic<C : Contact>(splitMessage: List<String>) {
             val inputStream = runBlocking {
                 EroPicMain.client.get<InputStream>(replaceUrl)
             }
-            this.eroPicOutputStream.writeBytes(inputStream.readAllBytes())
+            this.eroPicOutputStream.write(inputStream.readBytes())
             eroPicInputStream = ByteArrayInputStream(eroPicOutputStream.toByteArray())
             inputStream.close()
             EroPicMain.logger.info("下载完成：$this")

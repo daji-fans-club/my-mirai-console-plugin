@@ -10,7 +10,7 @@ mirai {
 }
 
 group = "com.reimia.myplugin"
-version = "0.1.3"
+version = "0.1.5"
 
 repositories {
     mavenLocal()
@@ -21,4 +21,6 @@ repositories {
 
 dependencies {
     implementation("com.google.code.gson:gson:2.9.0")
+    implementation("io.ktor:ktor-client-serialization:1.6.7")
+    implementation("io.ktor:ktor-client-apache:1.6.7")
 }
