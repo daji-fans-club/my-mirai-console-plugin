@@ -23,6 +23,7 @@ data class EroPicResponseJson (
         val height: Int,
         val ext: String,
         val uploadDate: Long,
-        val tags: List<String>
+        val tags: List<String>,
+        val aiType: Int
     )
 }
