@@ -33,7 +33,11 @@ object EroPicMain : KotlinPlugin(
         EroPicData.reload()
 
         EroPicConfigManager.register()
+        JinYanCommand.register()
+        JieJinYanCommand.register()
         AbstractPermitteeId.AnyContact.permit(EroPicConfigManager.permission)
+        AbstractPermitteeId.AnyContact.permit(JinYanCommand.permission)
+        AbstractPermitteeId.AnyContact.permit(JieJinYanCommand.permission)
 
         eroPicHandler()
         client = HttpClient()
@@ -43,7 +47,11 @@ object EroPicMain : KotlinPlugin(
 
     override fun onDisable() {
         AbstractPermitteeId.AnyContact.cancel(EroPicConfigManager.permission, true)
+        AbstractPermitteeId.AnyContact.cancel(JinYanCommand.permission, true)
+        AbstractPermitteeId.AnyContact.cancel(JieJinYanCommand.permission, true)
         EroPicConfigManager.unregister()
+        JinYanCommand.unregister()
+        JieJinYanCommand.unregister()
         logger.info("EroPic Plugin unloaded")
     }
 }

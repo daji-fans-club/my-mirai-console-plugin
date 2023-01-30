@@ -4,15 +4,11 @@ import kotlinx.coroutines.launch
 import net.mamoe.mirai.contact.Contact.Companion.sendImage
 import net.mamoe.mirai.contact.Friend
 import net.mamoe.mirai.contact.Group
-import net.mamoe.mirai.contact.nameCardOrNick
 import net.mamoe.mirai.event.GlobalEventChannel
 import net.mamoe.mirai.event.events.BotInvitedJoinGroupRequestEvent
 import net.mamoe.mirai.event.events.NewFriendRequestEvent
 import net.mamoe.mirai.event.subscribeFriendMessages
 import net.mamoe.mirai.event.subscribeGroupMessages
-import net.mamoe.mirai.event.subscribeGroupTempMessages
-import net.mamoe.mirai.message.data.Image
-import net.mamoe.mirai.message.data.MessageChainBuilder
 
 /**
  * event处理器
